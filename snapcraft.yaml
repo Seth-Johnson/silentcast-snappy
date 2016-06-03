@@ -1,0 +1,98 @@
+name: silentcast
+version: 1
+summary: tool for creating animated .gif files
+description: |
+ Silentcast is a tool for recording your screen and turning those recordings into animated .gif files. It supports full screen, inside windows, entire windows, and custom modes and exporting files as .mp4 and .webm.
+confinement: devmode # use "strict" to enforce system access only via declared interfaces
+
+apps:
+  silentcast:
+    command: /usr/bin/wrapper.sh
+    plugs: [x11, home]
+parts:
+  wrapper:
+    plugin: copy
+    source:
+  silentcast:
+    plugin: copy
+    source: git://github.com/colinkeenan/silentcast.git
+    source-type: git
+    files:
+      silentcast: /usr/bin/silentcast
+      genffcom: /usr/bin/genffcom
+      temptoanim: /usr/bin/temptoanim
+      transparent_window.py: /usr/share/silentcast/transparent_window.py
+      unity_indicator.py: /usr/share/silentcast/unity_indicator.py
+      stop1.png: /usr/share/silentcast/stop1.png
+      stop2.png: /usr/share/silentcast/stop2.png
+      record.png: /usr/share/silentcast/record.png
+      record1.png: /usr/share/silentcast/record1.png
+      record2.png: /usr/share/silentcast/record2.png
+      silentcast.png: /usr/share/pixmaps/silentcast.png
+      silentcast.desktop: /usr/share/applications/silentcast.desktop
+      README.md: /usr/share/doc/silentcast/README.md
+      manpages/silentcast.1: /usr/share/man/man1/silentcast.1
+      manpages/genffcom.1: /usr/share/man/man1/genffcom.1
+      manpages/temptoanim.1: /usr/share/man/man1/temptoanim.1
+    stage-packages: 
+        - xdotool
+        - python
+        - imagemagick
+        - wmctrl
+        - python-gobject
+        - python-cairo
+        - x11-utils
+        - xdg-utils
+        - libxrandr2
+        - gir1.2-gtk-3.0
+        - gir1.2-appindicator3-0.1
+        - fontconfig-config
+        - gnome-themes-standard
+  yad:
+    plugin: autotools
+    source: git://github.com/liloman/yad-dialog.git
+    source-type: git
+    build-packages:
+        - libgtk2.0-dev
+    stage-packages:
+        - libcairo2
+        - libgdk-pixbuf2.0-0
+        - libglib2.0-0
+        - libgtk2.0-0
+        - libpango-1.0-0
+        - libpangocairo-1.0-0
+        - libsoup2.4-1
+        - libwebkitgtk-1.0-0
+  ffmpeg:
+    plugin: autotools
+    configflags: [--enable-gpl, --enable-libass, --enable-libfreetype, --enable-libmp3lame, --enable-libopus, --enable-libtheora, --enable-libvorbis, --enable-libvpx, --enable-libx264, --enable-libx265, --enable-nonfree]
+    source: git://source.ffmpeg.org/ffmpeg.git
+    source-type: git
+    build-packages:
+      - git
+      - g++
+      - make
+      - yasm
+      - autoconf
+      - libtool
+      - cmake
+      - pkg-config
+      - automake
+      - build-essential
+      - libass-dev
+      - libfreetype6-dev
+      - libsdl1.2-dev
+      - libtheora-dev
+      - libva-dev
+      - libvdpau-dev
+      - libvorbis-dev
+      - libxcb1-dev
+      - libxcb-shm0-dev
+      - libxcb-xfixes0-dev
+      - texinfo
+      - zlib1g-dev
+      - libx264-dev
+      - libmp3lame-dev
+      - libopus-dev
+      - libx265-dev
+      - libvpx-dev
