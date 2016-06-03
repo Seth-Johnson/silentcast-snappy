@@ -12,7 +12,9 @@ apps:
 parts:
   wrapper:
     plugin: copy
-    source:
+    source: https://raw.githubusercontent.com/Seth-Johnson/silentcast-snappy/master/wrapper.sh
+    files:
+      wrapper: /usr/bin/wrapper.sh
   silentcast:
     plugin: copy
     source: git://github.com/colinkeenan/silentcast.git
